@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Student Management System</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            margin: 0;
+            background: #f4f6f8;
+        }
+
+        header {
+            background: #2c3e50;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            font-size: 24px;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1000px;
+            margin: 30px auto;
+        }
+
+        .card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+
+        h2 {
+            color: #2c3e50;
+        }
+
+        .form-group {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .form-group input {
+            flex: 1;
+            padding: 10px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+        }
+
+        button {
+            padding: 10px 20px;
+            background: #3498db;
+            border: none;
+            color: white;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #2980b9;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: center;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background: #3498db;
+            color: white;
+        }
+
+        tr:hover {
+            background: #f1f1f1;
+        }
+
+        .delete-btn {
+            background: #e74c3c;
+        }
+
+        .delete-btn:hover {
+            background: #c0392b;
+        }
+
+        footer {
+            text-align: center;
+            padding: 15px;
+            background: #2c3e50;
+            color: white;
+            margin-top: 40px;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    Student Management System
+</header>
+
+<div class="container">
+
+    <!-- Add Student -->
+    <div class="card">
+        <h2>Add Student</h2>
+        <div class="form-group">
+            <input type="text" id="name" placeholder="Student Name">
+            <input type="text" id="usn" placeholder="USN">
+            <input type="number" id="age" placeholder="Age">
+            <input type="text" id="course" placeholder="Course">
+            <button onclick="addStudent()">Add Student</button>
+        </div>
+    </div>
+
+    <!-- Student List -->
+    <div class="card">
+        <h2>Student List</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>USN</th>
+                    <th>Age</th>
+                    <th>Course</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody id="studentTable">
+                <!-- Rows added dynamically -->
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+<footer>
+    © 2026 Student Management Project | Designed by Gayithri
+</footer>
+
+<script>
+    function addStudent() {
+        let name = document.getElementById("name").value.trim();
+        let usn = document.getElementById("usn").value.trim();
+        let age = document.getElementById("age").value.trim();
+        let course = document.getElementById("course").value.trim();
+
+        if (name === "" || usn === "" || age === "" || course === "") {
+            alert("Please fill all fields");
+            return;
+        }
+
+        let table = document.getElementById("studentTable");
+        let rows = table.rows;
+
+        // Check duplicate student
+        for (let i = 0; i < rows.length; i++) {
+            let existingName = rows[i].cells[0].innerText.toLowerCase();
+            let existingUsn = rows[i].cells[1].innerText.toLowerCase();
+            let existingCourse = rows[i].cells[3].innerText.toLowerCase();
+
+            if (
+                existingName === name.toLowerCase() &&
+                existingUsn === usn.toLowerCase() &&
+                existingCourse === course.toLowerCase()
+            ) {
+                alert("Student already registered!");
+                return;
+            }
+        }
+
+        // Add new row
+        let row = table.insertRow();
+        row.insertCell(0).innerText = name;
+        row.insertCell(1).innerText = usn;
+        row.insertCell(2).innerText = age;
+        row.insertCell(3).innerText = course;
+        row.insertCell(4).innerHTML =
+            `<button class="delete-btn" onclick="deleteRow(this)">Delete</button>`;
+
+        // Clear input fields
+        document.getElementById("name").value = "";
+        document.getElementById("usn").value = "";
+        document.getElementById("age").value = "";
+        document.getElementById("course").value = "";
+    }
+
+    function deleteRow(btn) {
+        btn.parentNode.parentNode.remove();
+    }
+</script>
+
+</body>
+</html>
